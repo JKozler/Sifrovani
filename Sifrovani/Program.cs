@@ -10,8 +10,9 @@ namespace Sifrovani
     {
         static void Main(string[] args)
         {
-            string vetaKZasifrovani = "Pokud hledáte pomocnou ruku, najdete ji na konci své paže";
+            string vetaKZasifrovani = "Pokud hledáte pomocnou ruku, najdete ji na konci své paže.";
             string klic = "Pravda";
+            CeaserovaSifra(vetaKZasifrovani, 7);
             BlockovaSifraXOR(klic, vetaKZasifrovani);
             Console.ReadKey();
         }
@@ -39,6 +40,44 @@ namespace Sifrovani
                 helpIndex++;
             }
             Console.WriteLine(BinaryToString(data));
+        }
+
+        public static void CeaserovaSifra(string sifra, int step)
+        {
+            string data = "";
+            int[] asciiNumbers = new int[sifra.Length];
+            int helpIndex = 0;
+            foreach (char c in sifra) {
+                if (Char.ToUpper(c) == c)
+                {
+                    int se = 0;
+                    if ((step + (int)c) > 90)
+                    {
+                        se = step + (int)c - 90 + 64;
+                        asciiNumbers[helpIndex] = se;
+                    }
+                    else
+                        asciiNumbers[helpIndex] = (int)c + step;
+
+                }
+                else 
+                {
+                    int se = 0;
+                    if ((step + (int)c) > 122)
+                    {
+                        se = step + (int)c - 122 + 97;
+                        asciiNumbers[helpIndex] = se;
+                    }
+                    else
+                        asciiNumbers[helpIndex] = (int)c + step;
+                }
+                helpIndex++;
+            }
+            for (int i = 0; i < asciiNumbers.Length; i++)
+            {
+                data += ((char)asciiNumbers[i]).ToString();
+            }
+            Console.WriteLine(data);
         }
 
         public static string BinaryToString(string data)
